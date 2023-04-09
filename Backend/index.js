@@ -1,8 +1,9 @@
 const express=require("express");
-const connection = require("./config/db");
+const cors=require("cors");
+const {connection,ZaioModel} = require("./config/db");
 const app=express();
 app.use(express.json());
-
+app.use(cors());
 
 app.get("/",(req,res)=>{
     res.send("Welcome to home page")
@@ -10,9 +11,24 @@ app.get("/",(req,res)=>{
 
 
 
-app.get("/users",async(req,res)=>{
-    const usersData=await UsersModel.find();
-    res.send(usersData)
+app.post("/insertdata",async(req,res)=>{
+  
+    console.log(req.body)
+    const result = await ZaioModel.insertMany(req.body);
+
+   res.send(result)
+
+})
+
+
+
+app.get("/Zaiodata",async(req,res)=>{
+
+    const Za = await ZaioModel.find()
+ res.send(Za)
+    
+    
+
 })
 
 
